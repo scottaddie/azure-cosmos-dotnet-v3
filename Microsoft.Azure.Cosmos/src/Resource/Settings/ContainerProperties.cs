@@ -299,7 +299,20 @@ namespace Microsoft.Azure.Cosmos
         /// The collection containing <see cref="ComputedProperty"/> objects associated with the container.
         /// </value>
         [JsonProperty(PropertyName = "computedProperties", NullValueHandling = NullValueHandling.Ignore)]
-        public Collection<ComputedProperty> ComputedProperties { get; set; } = new Collection<ComputedProperty>();
+#if PREVIEW
+        public
+#else
+        internal
+#endif
+        Collection<ComputedProperty> ComputedProperties
+        {
+            get;
+#if PREVIEW
+            internal
+#endif
+            set;
+        }
+            = new Collection<ComputedProperty>();
 
         /// <summary>
         /// Gets the <see cref="ChangeFeedPolicy"/> associated with the container from the Azure Cosmos DB service.
@@ -391,7 +404,7 @@ namespace Microsoft.Azure.Cosmos
         [JsonIgnore]
 #if PREVIEW
         public
-#else 
+#else
         internal
 #endif
         IReadOnlyList<string> PartitionKeyPaths
